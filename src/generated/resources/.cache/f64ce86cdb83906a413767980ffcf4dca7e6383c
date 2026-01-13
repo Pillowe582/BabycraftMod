@@ -1,0 +1,8 @@
+// 26.1-snapshot-3	2026-01-20T15:00:24.3283894	Tags for minecraft:block mod id tutorial
+b09e9c33eeacd7c27af1f38799941a6ab4014257 data/minecraft/tags/block/fences.json
+9499ea23639aac25c461a930aa2b632b79e55e38 data/minecraft/tags/block/fence_gates.json
+da34ac06d380dcc282aebd493042986cb8318d58 data/minecraft/tags/block/mineable/pickaxe.json
+6a41ff3a500def9c9dab7e2eef45c3be1ebafd2a data/minecraft/tags/block/needs_iron_tool.json
+a6ff8eb2cb77ce026b7933a9b2bd4c62496f8ddc data/minecraft/tags/block/walls.json
+418d6d3e6cbd7b35e57f8b9b560aab55766acc41 data/tutorial/tags/block/ore_tags.json
+5d10cc5d08f26a88e9e190ea06698868d0c3f8d0 data/tutorial/tags/block/pickaxe_axe_mineable.json

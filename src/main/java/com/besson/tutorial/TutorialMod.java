@@ -1,5 +1,9 @@
 package com.besson.tutorial;
 
+import com.besson.tutorial.block.ModBlocks;
+import com.besson.tutorial.item.ModCreativeModeTabs;
+import com.besson.tutorial.item.ModItems;
+import net.minecraft.world.item.CreativeModeTabs;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -30,6 +34,9 @@ public class TutorialMod {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
+        ModItems.register(modEventBus);
+        ModBlocks.register(modEventBus);
+        ModCreativeModeTabs.register(modEventBus);
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (TutorialMod) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
@@ -57,7 +64,11 @@ public class TutorialMod {
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModItems.ICE_ETHER);
+            event.accept(ModItems.RAW_ICE_ETHER);
+            event.accept(ModItems.CARDBOARD);
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

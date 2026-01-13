@@ -1,6 +1,9 @@
 package com.besson.tutorial;
 
+import com.besson.tutorial.block.ModBlocks;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -27,5 +30,10 @@ public class TutorialModClient {
         // Some client setup code
         TutorialMod.LOGGER.info("HELLO FROM CLIENT SETUP");
         TutorialMod.LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.ICE_ETHER_DOOR.get(), ChunkSectionLayer.CUTOUT);
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.ICE_ETHER_TRAPDOOR.get(), ChunkSectionLayer.CUTOUT);
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.STRAWBERRY_CROP.get(), ChunkSectionLayer.CUTOUT);
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CORN_CROP.get(), ChunkSectionLayer.CUTOUT);
     }
 }
