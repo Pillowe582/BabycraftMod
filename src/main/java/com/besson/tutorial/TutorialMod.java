@@ -21,7 +21,7 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
-@Mod(TutorialMod.MOD_ID)
+// @Mod(TutorialMod.MOD_ID)
 public class TutorialMod {
     // Define mod id in a common place for everything to reference
     public static final String MOD_ID = "tutorial";
