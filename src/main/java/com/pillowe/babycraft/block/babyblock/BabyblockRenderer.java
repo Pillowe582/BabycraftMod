@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.phys.Vec3;
 
 import org.jetbrains.annotations.Nullable;
@@ -59,7 +60,7 @@ public class BabyblockRenderer implements BlockEntityRenderer<BabyblockEntity, B
         collector.submitBlock(poseStack,
                 state.adultState,
                 15728880,
-                0,
+                OverlayTexture.NO_OVERLAY,
                 0);
 
         poseStack.popPose();
