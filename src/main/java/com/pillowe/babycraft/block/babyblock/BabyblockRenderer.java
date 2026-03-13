@@ -30,7 +30,9 @@ public class BabyblockRenderer implements BlockEntityRenderer<BabyblockEntity, B
             Vec3 cameraPos,
             @Nullable ModelFeatureRenderer.CrumblingOverlay overlay) {
         // Extract the adult state from block entity
+        BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, partialTicks, cameraPos, overlay);
         renderState.adultState = blockEntity.getAdultState();
+
     }
 
     @Override
@@ -38,7 +40,6 @@ public class BabyblockRenderer implements BlockEntityRenderer<BabyblockEntity, B
             PoseStack poseStack,
             SubmitNodeCollector collector,
             CameraRenderState cameraState) {
-        System.out.println("===== BabyblockRenderer.submit() 被调用了！=====");
 
         // Submit the adult block
         if (state.adultState == null || state.adultState.isAir()) {
