@@ -34,7 +34,7 @@ public class WorldGenEvents {
         int minY = level.dimensionType().minY();
 
         // Choose some blocks in the chunk.
-        for (int i = 0; i < 16 * 16 * level.dimensionType().height() * Config.BABYBLOCK_GENERATE_CHANCE.get(); i++) {
+        for (int i = 0; i < level.dimensionType().height() * Config.BABYBLOCK_GENERATE_CHANCE.get(); i++) {
             pos.setX(chunk.getPos().getMinBlockX() + random.nextInt(16));
             pos.setY(random.nextInt(level.dimensionType().height()) + minY);
             pos.setZ(chunk.getPos().getMinBlockZ() + random.nextInt(16));
