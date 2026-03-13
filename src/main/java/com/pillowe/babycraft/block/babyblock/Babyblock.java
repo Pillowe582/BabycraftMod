@@ -1,7 +1,5 @@
 package com.pillowe.babycraft.block.babyblock;
 
-import com.pillowe.babycraft.block.babyblock.BabyblockEntity;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;

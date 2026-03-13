@@ -7,6 +7,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.HolderLookup;
 
 public class BabyblockEntity extends BlockEntity {
     private BlockState adultState;
@@ -17,10 +20,14 @@ public class BabyblockEntity extends BlockEntity {
 
     public void setAdultState(BlockState state) {
         this.adultState = state;
+        this.setChanged(); // Mark the block entity as changed
+        if (level != null && !level.isClientSide()) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
     }
 
     public BlockState getAdultState() {
-        return adultState;
+        return net.minecraft.world.level.block.Blocks.GLASS.defaultBlockState();
     }
 
     @Override
@@ -42,5 +49,15 @@ public class BabyblockEntity extends BlockEntity {
         adultState = input.read(
                 "adult_state",
                 BlockState.CODEC).orElse(null);
+    }
+
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return saveWithoutMetadata(registries);
     }
 }
