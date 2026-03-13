@@ -19,7 +19,7 @@ public class Babyblock extends Block implements EntityBlock {
 
     @Override
     public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.INVISIBLE;
+        return RenderShape.INVISIBLE; // Set origin block invisible, in case blocking babyblock
     }
 
 }

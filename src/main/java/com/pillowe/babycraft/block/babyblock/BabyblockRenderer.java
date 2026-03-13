@@ -30,7 +30,11 @@ public class BabyblockRenderer implements BlockEntityRenderer<BabyblockEntity, B
             Vec3 cameraPos,
             @Nullable ModelFeatureRenderer.CrumblingOverlay overlay) {
         // Extract the adult state from block entity
-        BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, partialTicks, cameraPos, overlay);
+        BlockEntityRenderer.super.extractRenderState(blockEntity,
+                renderState,
+                partialTicks,
+                cameraPos,
+                overlay); // This is mandatory, or die alive no render
         renderState.adultState = blockEntity.getAdultState();
 
     }
@@ -48,15 +52,15 @@ public class BabyblockRenderer implements BlockEntityRenderer<BabyblockEntity, B
 
         // Matrix transform to get a smaller one
         poseStack.pushPose();
-        poseStack.translate(0.5, 0.5, 0.5);
-        poseStack.scale(0.5f, 0.5f, 0.5f);
-        poseStack.translate(-0.5, -0.5, -0.5);
+        poseStack.translate(0.5, 0, 0.5);
+        poseStack.scale(0.75f, 0.75f, 0.75f);
+        poseStack.translate(-0.5, 0, -0.5);
 
         collector.submitBlock(poseStack,
-                net.minecraft.world.level.block.Blocks.GLASS.defaultBlockState(),
+                state.adultState,
                 15728880,
                 0,
-                255);
+                0);
 
         poseStack.popPose();
     }

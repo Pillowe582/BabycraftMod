@@ -27,7 +27,7 @@ public class BabyblockEntity extends BlockEntity {
     }
 
     public BlockState getAdultState() {
-        return net.minecraft.world.level.block.Blocks.GLASS.defaultBlockState();
+        return adultState;
     }
 
     @Override
