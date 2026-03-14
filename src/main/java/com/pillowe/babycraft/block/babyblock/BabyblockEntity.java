@@ -1,5 +1,6 @@
 package com.pillowe.babycraft.block.babyblock;
 
+import com.mojang.serialization.Codec;
 import com.pillowe.babycraft.block.ModBlockEntities;
 
 import net.minecraft.core.BlockPos;
@@ -13,6 +14,7 @@ import net.minecraft.core.HolderLookup;
 
 public class BabyblockEntity extends BlockEntity {
     private BlockState adultState;
+    private int growState = 1;
 
     public BabyblockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.BABY_BLOCK_ENTITY.get(), pos, state);
@@ -24,6 +26,18 @@ public class BabyblockEntity extends BlockEntity {
         if (level != null && !level.isClientSide()) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
+    }
+
+    public int growUp() {
+        growState += 1;
+        if (level != null && !level.isClientSide()) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
+        return growState;
+    }
+
+    public int getGrowState() {
+        return growState;
     }
 
     public BlockState getAdultState() {
@@ -40,6 +54,7 @@ public class BabyblockEntity extends BlockEntity {
                     BlockState.CODEC,
                     adultState);
         }
+        output.store("grow_state", Codec.INT, growState);
     }
 
     @Override
@@ -49,6 +64,7 @@ public class BabyblockEntity extends BlockEntity {
         adultState = input.read(
                 "adult_state",
                 BlockState.CODEC).orElse(null);
+        growState = input.read("grow_state", Codec.INT).orElse(1);
     }
 
     @Override

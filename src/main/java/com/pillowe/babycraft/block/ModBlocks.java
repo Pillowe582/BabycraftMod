@@ -14,6 +14,7 @@ public class ModBlocks {
         public static final DeferredBlock<Block> BABY_BLOCK = BLOCKS.registerBlock("baby_block", Babyblock::new,
                         () -> BlockBehaviour.Properties.of()
                                         .strength(0.3f)
+                                        .randomTicks()
                                         .noOcclusion()
                                         .dynamicShape());
 

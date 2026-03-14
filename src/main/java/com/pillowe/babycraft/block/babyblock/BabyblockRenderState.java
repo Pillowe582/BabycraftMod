@@ -9,6 +9,7 @@ public class BabyblockRenderState extends BlockEntityRenderState {
     public BlockState adultState;
     public BlockPos pos;
     public int packedLight;
+    public float growState;
 
     public BabyblockRenderState() {
         // Initialize with a default state

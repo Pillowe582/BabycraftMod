@@ -10,7 +10,7 @@ public class Config {
                         .defineInRange("BabyblockGenerateCount", 200, 0, 1000);
         public static final ModConfigSpec.DoubleValue BABYBLOCK_GROW_CHANCE = BUILDER
                         .comment("The chance that a baby grows up when random ticked")
-                        .defineInRange("BabyblockGrowChance", 0.0, 0.05, 1.0);
+                        .defineInRange("BabyblockGrowChance", 0.0, 0.5, 1.0);
 
         public static final ModConfigSpec SPEC = BUILDER.build();
 

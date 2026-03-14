@@ -39,6 +39,7 @@ public class BabyblockRenderer implements BlockEntityRenderer<BabyblockEntity, B
                 cameraPos,
                 overlay); // This is mandatory, or die alive no render
         renderState.adultState = blockEntity.getAdultState();
+        renderState.growState = blockEntity.getGrowState();
         renderState.pos = blockEntity.getBlockPos();
 
         // Make it light as common blocks
@@ -59,11 +60,12 @@ public class BabyblockRenderer implements BlockEntityRenderer<BabyblockEntity, B
         if (state.adultState == null || state.adultState.isAir()) {
             return;
         }
-
+        // Cal the grow state
+        float scaleMultiplier = 0.3f + 0.15f * state.growState;
         // Matrix transform to get a smaller one
         poseStack.pushPose();
         poseStack.translate(0.5, 0, 0.5);
-        poseStack.scale(0.75f, 0.75f, 0.75f);
+        poseStack.scale(scaleMultiplier, scaleMultiplier, scaleMultiplier);
         poseStack.translate(-0.5, 0, -0.5);
 
         collector.submitBlock(poseStack,
