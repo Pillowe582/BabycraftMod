@@ -35,7 +35,7 @@ public class ModPlacedFeatures {
                         // Ensure random distribution in chunk (InSquare)
                         InSquarePlacement.spread(),
                         // Height range: from bedrock (-64) to above sea level (80)
-                        HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(80)),
+                        HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(200)),
                         // Only place if there's space/conditions are met
                         BiomeFilter.biome()));
     }

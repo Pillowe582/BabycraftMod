@@ -1,6 +1,8 @@
 package com.pillowe.babycraft;
 
 import com.pillowe.babycraft.block.ModBlocks;
+import com.pillowe.babycraft.datagen.ModDataGenerator;
+import com.pillowe.babycraft.worldgen.ModFeatures;
 import com.pillowe.babycraft.block.ModBlockEntities;
 
 import com.mojang.logging.LogUtils;
@@ -29,5 +31,7 @@ public class BabycraftMod {
 
         ModBlocks.BLOCKS.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
+        ModFeatures.FEATURES.register(modEventBus);
+
     }
 }

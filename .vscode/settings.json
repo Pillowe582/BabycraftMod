@@ -1,5 +1,7 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
     "java.dependency.packagePresentation": "flat",
-    "java.search.scope": "all"
+    "java.search.scope": "all",
+    "java.jdt.ls.java.home": "E:\\Java\\jdk-25.0.2",
+    "java.jdt.ls.vmargs": "-Xms4g -Xmx16g -XX:+UseG1GC -XX:+UseStringDeduplication",
 }

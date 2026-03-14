@@ -1,10 +1,6 @@
 package com.pillowe.babycraft.worldgen;
 
 import com.pillowe.babycraft.BabycraftMod;
-import com.pillowe.babycraft.block.ModBlocks;
-
-import java.util.List;
-
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.Identifier;
@@ -12,17 +8,14 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
-import net.minecraft.world.level.levelgen.structure.templatesystem.AlwaysTrueTest;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> BABY_BLOCK_KEY = registerKey("baby_block");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
-        List<OreConfiguration.TargetBlockState> replaceEverythingTarget = List.of(
-                OreConfiguration.target(AlwaysTrueTest.INSTANCE, ModBlocks.BABY_BLOCK.get().defaultBlockState()));
-        
-        register(context, BABY_BLOCK_KEY, Feature.ORE, new OreConfiguration(replaceEverythingTarget, 4));
+
+        register(context, BABY_BLOCK_KEY, ModFeatures.BABY_BLOCK_FEATURE.get(), NoneFeatureConfiguration.INSTANCE);
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
