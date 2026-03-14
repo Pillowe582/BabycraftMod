@@ -1,5 +1,7 @@
 package com.pillowe.babycraft.worldgen;
 
+import com.pillowe.babycraft.Config;
+
 import com.mojang.serialization.Codec;
 
 import com.pillowe.babycraft.block.ModBlocks;
@@ -22,6 +24,9 @@ public class BabyblockFeature extends Feature<NoneFeatureConfiguration> {
         WorldGenLevel level = context.level();
         BlockPos pos = context.origin();
         BlockState originalState = level.getBlockState(pos);
+        if (context.random().nextInt(256) > Config.BABYBLOCK_GENERATE_COUNT.get()) {
+            return false;
+        }
         if (originalState.isAir() || originalState.is(Blocks.BEDROCK)) {
             return false;
         }

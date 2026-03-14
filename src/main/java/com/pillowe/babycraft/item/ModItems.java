@@ -8,7 +8,6 @@ import com.pillowe.babycraft.BabycraftMod;
 public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(BabycraftMod.MOD_ID);
 
-    public static final DeferredItem<Item> BABY_BLOCK_ITEM = ITEMS.registerItem("golden_dandelioness",
-            properties -> new Item(properties));
+    public static final DeferredItem<Item> GOLDEN_DANDELIONESS = ITEMS.registerSimpleItem("golden_dandelioness");
 
 }

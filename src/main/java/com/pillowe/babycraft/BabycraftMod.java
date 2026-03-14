@@ -7,10 +7,12 @@ import com.pillowe.babycraft.block.ModBlockEntities;
 
 import com.mojang.logging.LogUtils;
 
+import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 
 import org.slf4j.Logger;
 
@@ -33,5 +35,13 @@ public class BabycraftMod {
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModFeatures.FEATURES.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
+
+        modEventBus.addListener(this::addCreative);
+    }
+
+    private void addCreative(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
+            event.accept(ModItems.GOLDEN_DANDELIONESS);
+        }
     }
 }

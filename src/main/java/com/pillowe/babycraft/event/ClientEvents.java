@@ -1,4 +1,4 @@
-package com.pillowe.babycraft.client;
+package com.pillowe.babycraft.event;
 
 import com.pillowe.babycraft.BabycraftMod;
 import com.pillowe.babycraft.block.babyblock.BabyblockRenderer;

@@ -1,7 +1,6 @@
 package com.pillowe.babycraft.worldgen;
 
 import com.pillowe.babycraft.BabycraftMod;
-import com.pillowe.babycraft.Config;
 
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class ModPlacedFeatures {
                 configuredFeatures.getOrThrow(ModConfiguredFeatures.BABY_BLOCK_KEY),
                 List.of(
                         // Try to generate per chunk (Count)
-                        CountPlacement.of(Config.BABYBLOCK_GENERATE_COUNT.get()),
+                        CountPlacement.of(256),
                         // Ensure random distribution in chunk (InSquare)
                         InSquarePlacement.spread(),
                         // Height range: all
