@@ -1,5 +1,6 @@
 package com.pillowe.babycraft.block.babyblock;
 
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -30,6 +31,7 @@ public class BabyblockRenderer implements BlockEntityRenderer<BabyblockEntity, B
             float partialTicks,
             Vec3 cameraPos,
             @Nullable ModelFeatureRenderer.CrumblingOverlay overlay) {
+
         // Extract the adult state from block entity
         BlockEntityRenderer.super.extractRenderState(blockEntity,
                 renderState,
@@ -37,7 +39,14 @@ public class BabyblockRenderer implements BlockEntityRenderer<BabyblockEntity, B
                 cameraPos,
                 overlay); // This is mandatory, or die alive no render
         renderState.adultState = blockEntity.getAdultState();
+        renderState.pos = blockEntity.getBlockPos();
 
+        // Make it light as common blocks
+        if (blockEntity.getLevel() != null) {
+            renderState.packedLight = LevelRenderer.getLightCoords(blockEntity.getLevel(), renderState.pos);
+        } else {
+            renderState.packedLight = 15728880;
+        }
     }
 
     @Override
@@ -59,7 +68,7 @@ public class BabyblockRenderer implements BlockEntityRenderer<BabyblockEntity, B
 
         collector.submitBlock(poseStack,
                 state.adultState,
-                15728880,
+                state.packedLight,
                 OverlayTexture.NO_OVERLAY,
                 0);
 
