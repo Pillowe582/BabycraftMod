@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 public class BabyblockRenderer implements BlockEntityRenderer<BabyblockEntity, BabyblockRenderState> {
+    public static boolean highlighted = false;
 
     public BabyblockRenderer(BlockEntityRendererProvider.Context context) {
         // Constructor can be empty or used for initialization if needed
@@ -72,7 +73,7 @@ public class BabyblockRenderer implements BlockEntityRenderer<BabyblockEntity, B
                 state.adultState,
                 state.packedLight,
                 OverlayTexture.NO_OVERLAY,
-                0);
+                highlighted ? 255 : 0);
 
         poseStack.popPose();
     }
