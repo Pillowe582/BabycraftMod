@@ -6,7 +6,7 @@ import com.pillowe.babycraft.block.ModBlocks;
 import com.pillowe.babycraft.block.babyblock.BabyblockEntity;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.core.BlockPos;
-
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -22,7 +22,10 @@ public class BabyblockFeature extends Feature<NoneFeatureConfiguration> {
         WorldGenLevel level = context.level();
         BlockPos pos = context.origin();
         BlockState originalState = level.getBlockState(pos);
-        if (originalState.isAir()) {
+        if (originalState.isAir() || originalState.is(Blocks.BEDROCK)) {
+            return false;
+        }
+        if (!level.getFluidState(pos).isEmpty()) {
             return false;
         }
         boolean placed = level.setBlock(pos, ModBlocks.BABY_BLOCK.get().defaultBlockState(), 3);

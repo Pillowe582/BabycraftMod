@@ -1,6 +1,8 @@
 package com.pillowe.babycraft.worldgen;
 
 import com.pillowe.babycraft.BabycraftMod;
+import com.pillowe.babycraft.Config;
+
 import java.util.List;
 
 import net.minecraft.core.registries.Registries;
@@ -16,7 +18,6 @@ import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
-import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 
 public class ModPlacedFeatures {
 
@@ -31,13 +32,14 @@ public class ModPlacedFeatures {
                 configuredFeatures.getOrThrow(ModConfiguredFeatures.BABY_BLOCK_KEY),
                 List.of(
                         // Try to generate per chunk (Count)
-                        CountPlacement.of(100),
+                        CountPlacement.of(Config.BABYBLOCK_GENERATE_COUNT.get()),
                         // Ensure random distribution in chunk (InSquare)
                         InSquarePlacement.spread(),
-                        // Height range: from bedrock (-64) to above sea level (80)
-                        HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(200)),
-                        // Only place if there's space/conditions are met
-                        BiomeFilter.biome()));
+                        // Height range: all
+                        HeightRangePlacement.uniform(VerticalAnchor.BOTTOM, VerticalAnchor.TOP)
+                // Only place if there's space/conditions are met
+                // BiomeFilter.biome()
+                ));
     }
 
     public static ResourceKey<PlacedFeature> registerKey(String name) {
