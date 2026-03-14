@@ -1,7 +1,6 @@
 package com.pillowe.babycraft;
 
 import com.pillowe.babycraft.block.ModBlocks;
-import com.pillowe.babycraft.datagen.ModDataGenerator;
 import com.pillowe.babycraft.worldgen.ModFeatures;
 import com.pillowe.babycraft.block.ModBlockEntities;
 
