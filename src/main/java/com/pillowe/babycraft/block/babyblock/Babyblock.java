@@ -40,6 +40,16 @@ public class Babyblock extends Block implements EntityBlock {
     }
 
     @Override
+    public void spawnDestroyParticles(Level level, Player player, BlockPos pos, BlockState state) {
+        if (level.getBlockEntity(pos) instanceof BabyblockEntity be) {
+            BlockState adultState = be.getAdultState();
+            level.levelEvent(player, 2001, pos, getId(adultState));
+            return;
+        }
+        super.spawnDestroyParticles(level, player, pos, state);
+    }
+
+    @Override
     public RenderShape getRenderShape(BlockState state) {
         return RenderShape.INVISIBLE; // Set origin block invisible, in case blocking babyblock
     }
