@@ -8,6 +8,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,8 +21,12 @@ public class GoldenDandelionessItem extends Item {
         super(properties);
     }
 
+    @Override
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
+        if (level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
         BlockPos pos = context.getClickedPos();
         BlockState originalState = level.getBlockState(pos);
         if (!originalState.isAir()) {
@@ -40,13 +45,26 @@ public class GoldenDandelionessItem extends Item {
     @Override
     public InteractionResult interactLivingEntity(ItemStack itemStack, Player player, LivingEntity target,
             InteractionHand type) {
-        System.out.println("interactLivingEntity");
-        if (target instanceof AgeableMob ageableMob) {
+        if (!player.level().isClientSide() && target instanceof AgeableMob ageableMob && !ageableMob.isBaby()) {
             ageableMob.setBaby(true);
             itemStack.shrink(1);
             return InteractionResult.SUCCESS;
         }
         return super.interactLivingEntity(itemStack, null, target, type);
+    }
+
+    @Override
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+        if (level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
+        if (hand == InteractionHand.MAIN_HAND && player.getOffhandItem().is(Items.GOLDEN_DANDELION)) {
+            System.out.println("useMainHand");
+        } else if (hand == InteractionHand.OFF_HAND
+                && player.getMainHandItem().is(Items.GOLDEN_DANDELION)) {
+            System.out.println("useOffHand");
+        }
+        return super.use(level, player, hand);
     }
 
 }
