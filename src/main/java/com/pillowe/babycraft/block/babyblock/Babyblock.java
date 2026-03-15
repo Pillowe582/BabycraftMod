@@ -15,7 +15,12 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class Babyblock extends Block implements EntityBlock {
-    public static final VoxelShape SHAPE = Block.box(4, 0, 4, 12, 8, 12);
+    public static final VoxelShape[] SHAPE = new VoxelShape[] {
+            createScaledShape(0.3),
+            createScaledShape(0.45),
+            createScaledShape(0.6),
+            createScaledShape(0.75),
+            createScaledShape(0.9) };
 
     public Babyblock(Properties properties) {
         super(properties);
@@ -43,7 +48,13 @@ public class Babyblock extends Block implements EntityBlock {
             BlockPos pos,
             CollisionContext context) {
 
-        return SHAPE;
+        if (level.getBlockEntity(pos) instanceof BabyblockEntity be) {
+            int stage = be.getGrowState();
+            stage = Math.min(stage, SHAPE.length - 1);
+            return SHAPE[stage];
+        }
+
+        return SHAPE[0];
     }
 
     @Override
@@ -53,7 +64,13 @@ public class Babyblock extends Block implements EntityBlock {
             BlockPos pos,
             CollisionContext context) {
 
-        return SHAPE;
+        if (level.getBlockEntity(pos) instanceof BabyblockEntity be) {
+            int stage = be.getGrowState();
+            stage = Math.min(stage, SHAPE.length - 1);
+            return SHAPE[stage];
+        }
+
+        return SHAPE[0];
     }
 
     @Override
@@ -79,4 +96,18 @@ public class Babyblock extends Block implements EntityBlock {
         }
     }
 
+    public static VoxelShape createScaledShape(double scale) {
+        // Make collision box scale with growstate
+        double half = 8 * scale;
+
+        double minX = 8 - half;
+        double maxX = 8 + half;
+
+        double minZ = 8 - half;
+        double maxZ = 8 + half;
+
+        double maxY = 16 * scale;
+
+        return Block.box(minX, 0, minZ, maxX, maxY, maxZ);
+    }
 }

@@ -14,7 +14,7 @@ import net.minecraft.core.HolderLookup;
 
 public class BabyblockEntity extends BlockEntity {
     private BlockState adultState;
-    private int growState = 1;
+    private int growState = 0;
 
     public BabyblockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.BABY_BLOCK_ENTITY.get(), pos, state);
@@ -29,10 +29,15 @@ public class BabyblockEntity extends BlockEntity {
     }
 
     public int growUp() {
+        if (growState >= 4) {
+            growState = 4;
+            return growState;
+        }
         growState += 1;
         if (level != null && !level.isClientSide()) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
+
         return growState;
     }
 
