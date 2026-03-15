@@ -2,6 +2,7 @@ package com.pillowe.babycraft;
 
 import com.pillowe.babycraft.block.ModBlocks;
 import com.pillowe.babycraft.item.ModItems;
+import com.pillowe.babycraft.recipe.ModRecipes;
 import com.pillowe.babycraft.worldgen.ModFeatures;
 import com.pillowe.babycraft.block.ModBlockEntities;
 
@@ -35,6 +36,7 @@ public class BabycraftMod {
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModFeatures.FEATURES.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
+        ModRecipes.RECIPES.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
     }
