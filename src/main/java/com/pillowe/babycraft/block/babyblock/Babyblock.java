@@ -113,18 +113,22 @@ public class Babyblock extends Block implements EntityBlock {
         }
     }
 
-    protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos,
+    @Override
+    public InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos,
             Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (itemStack.is(Items.GOLDEN_DANDELION)) {
             if (!level.isClientSide()) {
-                isFrozen = isFrozen ? false : true;
-                System.out.println("Frozen: " + isFrozen);
+                reverseFrozen();
                 itemStack.shrink(1);
             }
             return InteractionResult.SUCCESS;
         }
 
         return super.useItemOn(itemStack, state, level, pos, player, hand, hitResult);
+    }
+
+    public void reverseFrozen() {
+        isFrozen = isFrozen ? false : true;
     }
 
     public static VoxelShape createScaledShape(double scale) {

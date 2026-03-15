@@ -5,6 +5,7 @@ import java.util.stream.Stream;
 
 import com.pillowe.babycraft.Config;
 import com.pillowe.babycraft.block.ModBlocks;
+import com.pillowe.babycraft.block.babyblock.Babyblock;
 import com.pillowe.babycraft.block.babyblock.BabyblockEntity;
 
 import net.minecraft.core.BlockPos;
@@ -81,7 +82,9 @@ public class GoldenDandelionessItem extends Item {
             AABB area = new AABB(pos).inflate(radius);
             Stream<BlockState> blocks = level.getBlockStates(area);
             blocks.forEach(blockState -> {
-
+                if (blockState.getBlock() instanceof Babyblock block) {
+                    block.reverseFrozen();
+                }
             });
             List<AgeableMob> mobs = level.getEntitiesOfClass(AgeableMob.class, area);
             int tempCount = mainStack.getCount();
