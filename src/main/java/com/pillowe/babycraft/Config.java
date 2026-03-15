@@ -11,7 +11,12 @@ public class Config {
         public static final ModConfigSpec.DoubleValue BABYBLOCK_GROW_CHANCE = BUILDER
                         .comment("The chance that a baby grows up when random ticked")
                         .defineInRange("BabyblockGrowChance", 0.0, 0.5, 1.0);
-
+        public static final ModConfigSpec.DoubleValue GOLDEN_DANDELION_BLAST_RADIUS = BUILDER
+                        .comment("The radius of the golden dandelion explosion")
+                        .defineInRange("GoldenDandelionBlastRadius", 10.0, 0.0, 64.0);
+        public static final ModConfigSpec.DoubleValue GOLDEN_DANDELIONESS_BLAST_RADIUS = BUILDER
+                        .comment("The radius of the golden dandelioness explosion")
+                        .defineInRange("GoldenDandelionessBlastRadius", 10.0, 0.0, 64.0);
         public static final ModConfigSpec SPEC = BUILDER.build();
 
 }
