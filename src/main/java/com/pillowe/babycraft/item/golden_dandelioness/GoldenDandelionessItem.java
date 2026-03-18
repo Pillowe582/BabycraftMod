@@ -97,9 +97,8 @@ public class GoldenDandelionessItem extends Item {
         if (level.isClientSide()) {
 
             double progress = Math.min(usedTime / 50.0, 1.0);
-            double particleProgress = progress * (2 - progress);
-            double half = maxSize * particleProgress;
-
+            double eased = 1 - Math.pow(1 - progress, 3);
+            double half = maxSize * eased;
             int pointsPerSide = 25;
 
             for (int i = 0; i < pointsPerSide; i++) {
