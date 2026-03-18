@@ -3,6 +3,8 @@ package com.pillowe.babycraft.block.babyblock;
 import com.pillowe.babycraft.Config;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -117,8 +119,15 @@ public class Babyblock extends Block implements EntityBlock {
             Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (itemStack.is(Items.GOLDEN_DANDELION)) {
             if (!level.isClientSide()) {
-                isFrozen = isFrozen ? false : true;
-                System.out.println("Frozen: " + isFrozen);
+                if (level.getBlockEntity(pos) instanceof BabyblockEntity babyblockEntity) {
+                    boolean targetFrozenState = !babyblockEntity.isFrozen();
+                    ParticleOptions particle = targetFrozenState ? ParticleTypes.PAUSE_MOB_GROWTH
+                            : ParticleTypes.RESET_MOB_GROWTH;
+                    babyblockEntity.setFrozen(targetFrozenState);
+                    ((ServerLevel) level).sendParticles(particle, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5,
+                            10, 0.5, 0.25, 0.5,
+                            0);
+                }
                 itemStack.shrink(1);
             }
             return InteractionResult.SUCCESS;
