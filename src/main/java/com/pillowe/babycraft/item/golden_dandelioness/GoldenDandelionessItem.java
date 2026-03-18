@@ -196,6 +196,7 @@ public class GoldenDandelionessItem extends Item {
             mobs.forEach(mob -> {
                 setEntityBaby(level, mob, false);
                 if (mob instanceof Animal animal) {
+                    animal.setAge(0);
                     animal.setInLove(player);
                 }
             });
