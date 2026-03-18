@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.entity.AgeableMob;
@@ -225,7 +226,8 @@ public class GoldenDandelionessItem extends Item {
 
     private static boolean setEntityBaby(Level level, LivingEntity target, boolean setBaby) {
 
-        if (!level.isClientSide() && target instanceof AgeableMob ageableMob && ageableMob.isBaby() != setBaby) {
+        if (!level.isClientSide() && target instanceof AgeableMob ageableMob && ageableMob.isBaby() != setBaby
+                && !ageableMob.isAgeLocked()) {
             ageableMob.setBaby(setBaby);
             return true;
         }
@@ -235,7 +237,7 @@ public class GoldenDandelionessItem extends Item {
     private static boolean setBlockBaby(Level level, BlockPos pos) {
 
         BlockState originalState = level.getBlockState(pos);
-        if (!originalState.isAir()) {
+        if (!originalState.isAir() && !originalState.is(Blocks.BEDROCK)) {
             boolean placed = level.setBlock(pos, ModBlocks.BABY_BLOCK.get().defaultBlockState(), 3);
             if (placed) {
                 if (level.getBlockEntity(pos) instanceof BabyblockEntity baby) {
