@@ -148,21 +148,24 @@ public class GoldenDandelionessItem extends Item {
         ItemStack mainStack = player.getMainHandItem();
         ItemStack offStack = player.getOffhandItem();
         BlockPos pos = player.blockPosition();
+        boolean isShifting = player.isShiftKeyDown();
         if (mainStack.is(ModItems.GOLDEN_DANDELIONESS.get()) && offStack.is(Items.GOLDEN_DANDELION)) {
             // Make things degrow to babies
             double radius = Config.GOLDEN_DANDELIONESS_BLAST_RADIUS.get();
-
-            // Make blocks degrow
             AABB area = new AABB(pos).inflate(radius);
-            BlockPos.betweenClosedStream(area).forEach(blockPos -> {
-                setBlockBaby(level, blockPos);
-            });
 
-            // Make mobs degrow
-            List<AgeableMob> mobs = level.getEntitiesOfClass(AgeableMob.class, area);
-            mobs.forEach(mob -> {
-                setEntityBaby(level, mob, true);
-            });
+            if (isShifting) {
+                // Make blocks degrow
+                BlockPos.betweenClosedStream(area).forEach(blockPos -> {
+                    setBlockBaby(level, blockPos);
+                });
+            } else {
+                // Make mobs degrow
+                List<AgeableMob> mobs = level.getEntitiesOfClass(AgeableMob.class, area);
+                mobs.forEach(mob -> {
+                    setEntityBaby(level, mob, true);
+                });
+            }
 
             mainStack.shrink(1);
             offStack.shrink(1);
@@ -181,24 +184,25 @@ public class GoldenDandelionessItem extends Item {
             // Make things grow to adults
             double radius = Config.GOLDEN_DANDELION_BLAST_RADIUS.get();
             AABB area = new AABB(pos).inflate(radius);
-
-            // Make blocks grow
-            BlockPos.betweenClosedStream(area).forEach(blockPos -> {
-                if (level.getBlockEntity(blockPos) instanceof BabyblockEntity block) {
-                    block.setGrowState(4);
-                    block.growUp();
-                }
-            });
-
-            // Make mobs grow and love
-            List<AgeableMob> mobs = level.getEntitiesOfClass(AgeableMob.class, area);
-            mobs.forEach(mob -> {
-                setEntityBaby(level, mob, false);
-                if (mob instanceof Animal animal) {
-                    animal.setAge(0);
-                    animal.setInLove(player);
-                }
-            });
+            if (isShifting) {
+                // Make blocks grow
+                BlockPos.betweenClosedStream(area).forEach(blockPos -> {
+                    if (level.getBlockEntity(blockPos) instanceof BabyblockEntity block) {
+                        block.setGrowState(4);
+                        block.growUp();
+                    }
+                });
+            } else {
+                // Make mobs grow and love
+                List<AgeableMob> mobs = level.getEntitiesOfClass(AgeableMob.class, area);
+                mobs.forEach(mob -> {
+                    setEntityBaby(level, mob, false);
+                    if (mob instanceof Animal animal) {
+                        animal.setAge(0);
+                        animal.setInLove(player);
+                    }
+                });
+            }
 
             mainStack.shrink(1);
             offStack.shrink(1);
