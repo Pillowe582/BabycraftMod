@@ -28,7 +28,6 @@ public class Babyblock extends Block implements EntityBlock {
             createScaledShape(0.6),
             createScaledShape(0.75),
             createScaledShape(0.9) };
-    private static boolean isFrozen = false;
 
     public Babyblock(Properties properties) {
         super(properties);
@@ -98,18 +97,12 @@ public class Babyblock extends Block implements EntityBlock {
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         // Apply grow chance when random ticked
-        if (isFrozen || random.nextFloat() >= Config.BABYBLOCK_GROW_CHANCE.get()) {
+        if (random.nextFloat() >= Config.BABYBLOCK_GROW_CHANCE.get()) {
             return;
         }
         // Grow up
         if (level.getBlockEntity(pos) instanceof BabyblockEntity babyblockEntity) {
-            int growState = babyblockEntity.growUp();
-            if (growState >= 4) {
-                BlockState adultState = babyblockEntity.getAdultState();
-                if (adultState != null && !adultState.isAir()) {
-                    level.setBlock(pos, adultState, 3);
-                }
-            }
+            babyblockEntity.tickGrow(level, pos);
         }
     }
 
@@ -118,17 +111,15 @@ public class Babyblock extends Block implements EntityBlock {
             Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (itemStack.is(Items.GOLDEN_DANDELION)) {
             if (!level.isClientSide()) {
-                reverseFrozen();
+                if (level.getBlockEntity(pos) instanceof BabyblockEntity babyblockEntity) {
+                    babyblockEntity.setFrozen(babyblockEntity.isFrozen() ? false : true);
+                }
                 itemStack.shrink(1);
             }
             return InteractionResult.SUCCESS;
         }
 
         return super.useItemOn(itemStack, state, level, pos, player, hand, hitResult);
-    }
-
-    public void reverseFrozen() {
-        isFrozen = isFrozen ? false : true;
     }
 
     public static VoxelShape createScaledShape(double scale) {

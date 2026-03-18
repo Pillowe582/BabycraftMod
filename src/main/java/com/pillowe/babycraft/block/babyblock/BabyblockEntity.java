@@ -9,12 +9,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.HolderLookup;
 
 public class BabyblockEntity extends BlockEntity {
     private BlockState adultState;
     private int growState = 0;
+    private boolean isFrozen = false;
 
     public BabyblockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.BABY_BLOCK_ENTITY.get(), pos, state);
@@ -28,9 +30,16 @@ public class BabyblockEntity extends BlockEntity {
         }
     }
 
+    public BlockState getAdultState() {
+        return adultState;
+    }
+
     public int growUp() {
         if (growState >= 4) {
-            growState = 4;
+            BlockState adultState = getAdultState();
+            if (adultState != null && !adultState.isAir()) {
+                level.setBlock(getBlockPos(), adultState, 3);
+            }
             return growState;
         }
         growState += 1;
@@ -45,8 +54,26 @@ public class BabyblockEntity extends BlockEntity {
         return growState;
     }
 
-    public BlockState getAdultState() {
-        return adultState;
+    public void setGrowState(int state) {
+        growState = state;
+    }
+
+    public void setFrozen(boolean frozen) {
+        isFrozen = frozen;
+    }
+
+    public boolean isFrozen() {
+        return isFrozen;
+    }
+
+    public void tickGrow(ServerLevel level, BlockPos pos) {
+
+        if (isFrozen) {
+            return;
+        }
+
+        growUp();
+
     }
 
     @Override

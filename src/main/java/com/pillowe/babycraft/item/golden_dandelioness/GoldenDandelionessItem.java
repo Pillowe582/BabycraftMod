@@ -5,8 +5,8 @@ import java.util.stream.Stream;
 
 import com.pillowe.babycraft.Config;
 import com.pillowe.babycraft.block.ModBlocks;
-import com.pillowe.babycraft.block.babyblock.Babyblock;
 import com.pillowe.babycraft.block.babyblock.BabyblockEntity;
+import com.pillowe.babycraft.item.ModItems;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -43,20 +43,20 @@ public class GoldenDandelionessItem extends Item {
     @Override
     public InteractionResult interactLivingEntity(ItemStack itemStack, Player player, LivingEntity target,
             InteractionHand type) {
-        if (setEntityBaby(player.level(), target)) {
+        if (setEntityBaby(player.level(), target, true)
+                & player.getMainHandItem().is(ModItems.GOLDEN_DANDELIONESS.get())) {
             itemStack.shrink(1);
             return InteractionResult.SUCCESS;
         }
-        return super.interactLivingEntity(itemStack, null, target, type);
+        return super.interactLivingEntity(itemStack, player, target, type);
     }
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
-        if (level.isClientSide()) {
-            return InteractionResult.SUCCESS;
-        }
+
         ItemStack mainStack = player.getMainHandItem();
         ItemStack offStack = player.getOffhandItem();
+
         if (hand == InteractionHand.MAIN_HAND && offStack.is(Items.GOLDEN_DANDELION)) {
 
             double radius = Config.GOLDEN_DANDELIONESS_BLAST_RADIUS.get();
@@ -68,41 +68,40 @@ public class GoldenDandelionessItem extends Item {
             });
             List<AgeableMob> mobs = level.getEntitiesOfClass(AgeableMob.class, area);
             mobs.forEach(mob -> {
-                setEntityBaby(level, mob);
+                setEntityBaby(level, mob, true);
             });
             mainStack.shrink(1);
             offStack.shrink(1);
 
-            ;
-
         } else if (hand == InteractionHand.OFF_HAND
-                && mainStack.is(Items.GOLDEN_DANDELION)) {
+                && mainStack.is(Items.GOLDEN_DANDELION))
+
+        {
             double radius = Config.GOLDEN_DANDELION_BLAST_RADIUS.get();
             BlockPos pos = player.blockPosition();
             AABB area = new AABB(pos).inflate(radius);
-            Stream<BlockState> blocks = level.getBlockStates(area);
-            blocks.forEach(blockState -> {
-                if (blockState.getBlock() instanceof Babyblock block) {
-                    block.reverseFrozen();
+            BlockPos.betweenClosedStream(area).forEach(blockPos -> {
+                if (level.getBlockEntity(blockPos) instanceof BabyblockEntity block) {
+                    block.setGrowState(4);
+                    block.growUp();
                 }
             });
+
             List<AgeableMob> mobs = level.getEntitiesOfClass(AgeableMob.class, area);
-            int tempCount = mainStack.getCount();
             mobs.forEach(mob -> {
-                mainStack.setCount(tempCount);
-                mob.interact(player, InteractionHand.MAIN_HAND, mob.position());
+                setEntityBaby(level, mob, false);
             });
-            mainStack.setCount(tempCount - 1);
+            mainStack.shrink(1);
             offStack.shrink(1);
 
         }
         return super.use(level, player, hand);
     }
 
-    private static boolean setEntityBaby(Level level, LivingEntity target) {
+    private static boolean setEntityBaby(Level level, LivingEntity target, boolean setBaby) {
 
-        if (!level.isClientSide() && target instanceof AgeableMob ageableMob && !ageableMob.isBaby()) {
-            ageableMob.setBaby(true);
+        if (!level.isClientSide() && target instanceof AgeableMob ageableMob && ageableMob.isBaby() != setBaby) {
+            ageableMob.setBaby(setBaby);
             return true;
         }
         return false;
