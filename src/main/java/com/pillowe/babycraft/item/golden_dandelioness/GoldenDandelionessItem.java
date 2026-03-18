@@ -1,7 +1,6 @@
 package com.pillowe.babycraft.item.golden_dandelioness;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import com.pillowe.babycraft.Config;
 import com.pillowe.babycraft.block.ModBlocks;
@@ -15,6 +14,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 
 public class GoldenDandelionessItem extends Item {
@@ -45,8 +46,8 @@ public class GoldenDandelionessItem extends Item {
     @Override
     public InteractionResult interactLivingEntity(ItemStack itemStack, Player player, LivingEntity target,
             InteractionHand type) {
-        if (setEntityBaby(player.level(), target, true)
-                & player.getMainHandItem().is(ModItems.GOLDEN_DANDELIONESS.get())) {
+        if (player.getMainHandItem().is(ModItems.GOLDEN_DANDELIONESS.get())
+                && setEntityBaby(player.level(), target, true)) {
             itemStack.shrink(1);
             return InteractionResult.SUCCESS;
         }
@@ -60,33 +61,129 @@ public class GoldenDandelionessItem extends Item {
 
         ItemStack mainStack = player.getMainHandItem();
         ItemStack offStack = player.getOffhandItem();
-        if (hand == InteractionHand.MAIN_HAND && offStack.is(Items.GOLDEN_DANDELION)) {
+        if ((hand == InteractionHand.MAIN_HAND && offStack.is(Items.GOLDEN_DANDELION))
+                || (hand == InteractionHand.OFF_HAND
+                        && mainStack.is(Items.GOLDEN_DANDELION))) {
+            player.startUsingItem(hand);
+            return InteractionResult.CONSUME;
+        }
 
+        return super.use(level, player, hand);
+    }
+
+    @Override
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
+        return 1145;
+    }
+
+    @Override
+    public ItemUseAnimation getUseAnimation(ItemStack stack) {
+        return ItemUseAnimation.BOW;
+    }
+
+    @Override
+    public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remainingUseTicks) {
+
+        if (!(entity instanceof Player player))
+            return;
+
+        double maxSize = 3;
+        int usedTime = getUseDuration(stack, entity) - remainingUseTicks;
+        if (entity.getMainHandItem().is(ModItems.GOLDEN_DANDELIONESS.get())) {
+            maxSize = Config.GOLDEN_DANDELIONESS_BLAST_RADIUS.get();
+        } else if (entity.getMainHandItem().is(Items.GOLDEN_DANDELION)) {
+            maxSize = Config.GOLDEN_DANDELION_BLAST_RADIUS.get();
+        }
+        if (level.isClientSide()) {
+
+            double progress = Math.min(usedTime / 50.0, 1.0);
+            double particleProgress = progress * (2 - progress);
+            double half = maxSize * particleProgress;
+
+            int pointsPerSide = 25;
+
+            for (int i = 0; i < pointsPerSide; i++) {
+
+                double t = i / (double) (pointsPerSide - 1); // 0 → 1
+                double offset = (t - 0.5) * 2 * half; // -half → +half
+
+                double x = entity.getX();
+                double y = entity.getY() + 0.1;
+                double z = entity.getZ();
+
+                // Downside
+                level.addParticle(ParticleTypes.ENCHANT, x + offset, y, z - half, 0, 0, 0);
+
+                // Upside
+                level.addParticle(ParticleTypes.ENCHANT, x + offset, y, z + half, 0, 0, 0);
+
+                // Leftside
+                level.addParticle(ParticleTypes.ENCHANT, x - half, y, z + offset, 0, 0, 0);
+
+                // Rightside
+                level.addParticle(ParticleTypes.ENCHANT, x + half, y, z + offset, 0, 0, 0);
+            }
+        }
+        if (usedTime >= 50) {
+            // Forcely stop using item
+            if (!level.isClientSide()) {
+                releaseUsing(stack, level, player, remainingUseTicks);
+            }
+
+            player.stopUsingItem();
+        }
+
+    }
+
+    @Override
+    public boolean releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
+        if ((getUseDuration(stack, entity) - timeLeft) < 50) {
+            // Not full powered
+            return false;
+        }
+        if (!(entity instanceof Player player))
+            return false;
+        if (level.isClientSide())
+            return false;
+
+        ItemStack mainStack = player.getMainHandItem();
+        ItemStack offStack = player.getOffhandItem();
+        BlockPos pos = player.blockPosition();
+        if (mainStack.is(ModItems.GOLDEN_DANDELIONESS.get()) && offStack.is(Items.GOLDEN_DANDELION)) {
+            // Make things degrow to babies
             double radius = Config.GOLDEN_DANDELIONESS_BLAST_RADIUS.get();
-            BlockPos pos = player.blockPosition();
+
+            // Make blocks degrow
             AABB area = new AABB(pos).inflate(radius);
-            Stream<BlockPos> blocks = BlockPos.betweenClosedStream(area);
-            blocks.forEach(blockPos -> {
+            BlockPos.betweenClosedStream(area).forEach(blockPos -> {
                 setBlockBaby(level, blockPos);
             });
+
+            // Make mobs degrow
             List<AgeableMob> mobs = level.getEntitiesOfClass(AgeableMob.class, area);
             mobs.forEach(mob -> {
                 setEntityBaby(level, mob, true);
             });
+
             mainStack.shrink(1);
             offStack.shrink(1);
+            player.getCooldowns().addCooldown(mainStack, 20);
+            player.getCooldowns().addCooldown(offStack, 20);
 
             ((ServerLevel) level).sendParticles(ParticleTypes.PAUSE_MOB_GROWTH, pos.getX(), pos.getY(), pos.getZ(),
                     (int) (50 * radius),
                     radius, radius, radius, 0.0);
+            return true;
 
-        } else if (hand == InteractionHand.OFF_HAND
+        } else if (offStack.is(ModItems.GOLDEN_DANDELIONESS.get())
                 && mainStack.is(Items.GOLDEN_DANDELION))
 
         {
+            // Make things grow to adults
             double radius = Config.GOLDEN_DANDELION_BLAST_RADIUS.get();
-            BlockPos pos = player.blockPosition();
             AABB area = new AABB(pos).inflate(radius);
+
+            // Make blocks grow
             BlockPos.betweenClosedStream(area).forEach(blockPos -> {
                 if (level.getBlockEntity(blockPos) instanceof BabyblockEntity block) {
                     block.setGrowState(4);
@@ -94,19 +191,28 @@ public class GoldenDandelionessItem extends Item {
                 }
             });
 
+            // Make mobs grow and love
             List<AgeableMob> mobs = level.getEntitiesOfClass(AgeableMob.class, area);
             mobs.forEach(mob -> {
                 setEntityBaby(level, mob, false);
+                if (mob instanceof Animal animal) {
+                    animal.setInLove(player);
+                }
             });
+
             mainStack.shrink(1);
             offStack.shrink(1);
+            player.getCooldowns().addCooldown(mainStack, 20);
+            player.getCooldowns().addCooldown(offStack, 20);
 
             ((ServerLevel) level).sendParticles(ParticleTypes.RESET_MOB_GROWTH, pos.getX(), pos.getY(), pos.getZ(),
                     (int) (50 * radius),
                     radius, radius, radius, 0.0);
 
+            return true;
+
         }
-        return super.use(level, player, hand);
+        return false;
     }
 
     private static boolean setEntityBaby(Level level, LivingEntity target, boolean setBaby) {
