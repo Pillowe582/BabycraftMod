@@ -9,6 +9,8 @@ import com.pillowe.babycraft.block.babyblock.BabyblockEntity;
 import com.pillowe.babycraft.item.ModItems;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
@@ -53,10 +55,11 @@ public class GoldenDandelionessItem extends Item {
 
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
+        if (level.isClientSide())
+            return InteractionResult.SUCCESS;
 
         ItemStack mainStack = player.getMainHandItem();
         ItemStack offStack = player.getOffhandItem();
-
         if (hand == InteractionHand.MAIN_HAND && offStack.is(Items.GOLDEN_DANDELION)) {
 
             double radius = Config.GOLDEN_DANDELIONESS_BLAST_RADIUS.get();
@@ -72,6 +75,10 @@ public class GoldenDandelionessItem extends Item {
             });
             mainStack.shrink(1);
             offStack.shrink(1);
+
+            ((ServerLevel) level).sendParticles(ParticleTypes.PAUSE_MOB_GROWTH, pos.getX(), pos.getY(), pos.getZ(),
+                    (int) (50 * radius),
+                    radius, radius, radius, 0.0);
 
         } else if (hand == InteractionHand.OFF_HAND
                 && mainStack.is(Items.GOLDEN_DANDELION))
@@ -93,6 +100,10 @@ public class GoldenDandelionessItem extends Item {
             });
             mainStack.shrink(1);
             offStack.shrink(1);
+
+            ((ServerLevel) level).sendParticles(ParticleTypes.RESET_MOB_GROWTH, pos.getX(), pos.getY(), pos.getZ(),
+                    (int) (50 * radius),
+                    radius, radius, radius, 0.0);
 
         }
         return super.use(level, player, hand);
