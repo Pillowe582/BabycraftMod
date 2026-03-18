@@ -8,6 +8,7 @@ import com.pillowe.babycraft.block.babyblock.BabyblockEntity;
 import com.pillowe.babycraft.item.ModItems;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -88,11 +89,14 @@ public class GoldenDandelionessItem extends Item {
             return;
 
         double maxSize = 3;
+        ParticleOptions particle = ParticleTypes.PAUSE_MOB_GROWTH;
         int usedTime = getUseDuration(stack, entity) - remainingUseTicks;
         if (entity.getMainHandItem().is(ModItems.GOLDEN_DANDELIONESS.get())) {
+            particle = ParticleTypes.PAUSE_MOB_GROWTH;
             maxSize = Config.GOLDEN_DANDELIONESS_BLAST_RADIUS.get();
         } else if (entity.getMainHandItem().is(Items.GOLDEN_DANDELION)) {
             maxSize = Config.GOLDEN_DANDELION_BLAST_RADIUS.get();
+            particle = ParticleTypes.RESET_MOB_GROWTH;
         }
         if (level.isClientSide()) {
 
@@ -111,16 +115,16 @@ public class GoldenDandelionessItem extends Item {
                 double z = entity.getZ();
 
                 // Downside
-                level.addParticle(ParticleTypes.ENCHANT, x + offset, y, z - half, 0, 0, 0);
+                level.addParticle(particle, x + offset, y, z - half, 0, 0, 0);
 
                 // Upside
-                level.addParticle(ParticleTypes.ENCHANT, x + offset, y, z + half, 0, 0, 0);
+                level.addParticle(particle, x + offset, y, z + half, 0, 0, 0);
 
                 // Leftside
-                level.addParticle(ParticleTypes.ENCHANT, x - half, y, z + offset, 0, 0, 0);
+                level.addParticle(particle, x - half, y, z + offset, 0, 0, 0);
 
                 // Rightside
-                level.addParticle(ParticleTypes.ENCHANT, x + half, y, z + offset, 0, 0, 0);
+                level.addParticle(particle, x + half, y, z + offset, 0, 0, 0);
             }
         }
         if (usedTime >= 50) {
