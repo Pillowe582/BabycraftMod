@@ -35,6 +35,9 @@ public class BabyblockEntity extends BlockEntity {
     }
 
     public int growUp() {
+        if (isFrozen) {
+            return growState;
+        }
         if (growState >= 4) {
             BlockState adultState = getAdultState();
             if (adultState != null && !adultState.isAir()) {
@@ -55,7 +58,9 @@ public class BabyblockEntity extends BlockEntity {
     }
 
     public void setGrowState(int state) {
-        growState = state;
+        if (!isFrozen) {
+            growState = state;
+        }
     }
 
     public void setFrozen(boolean frozen) {
@@ -68,11 +73,9 @@ public class BabyblockEntity extends BlockEntity {
 
     public void tickGrow(ServerLevel level, BlockPos pos) {
 
-        if (isFrozen) {
-            return;
+        if (!isFrozen) {
+            growUp();
         }
-
-        growUp();
 
     }
 
