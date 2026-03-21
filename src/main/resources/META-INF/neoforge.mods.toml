@@ -1,9 +1,13 @@
 license="MIT"
 [[mods]]
+namespace="pillowe"
 modId="babycraft"
 version="1.0.0"
 displayName="Babycraft"
 authors="Pillowe"
+credits="Neoforge documentation, ChatGPT and Gemini"
 description='''
 ojng will like them.
 '''
+logoFile="assets/babycraft/logo/Babyblock.png"
+displayURL="https://github.com/Pillowe582/BabycraftMod"
