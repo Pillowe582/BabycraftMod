@@ -17,6 +17,9 @@ public class Config {
         public static final ModConfigSpec.DoubleValue GOLDEN_DANDELIONESS_BLAST_RADIUS = BUILDER
                         .comment("The radius of the golden dandelioness explosion")
                         .defineInRange("GoldenDandelionessBlastRadius", 3.0, 0.0, 64.0);
+        public static final ModConfigSpec.IntValue HIGHLIGHT_COLOR = BUILDER
+                        .comment("The color of the highlight")
+                        .defineInRange("HighlightColor", 0xFFFFFF, 0, 0xFFFFFF);
         public static final ModConfigSpec SPEC = BUILDER.build();
 
 }

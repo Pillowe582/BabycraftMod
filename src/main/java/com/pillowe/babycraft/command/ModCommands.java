@@ -2,6 +2,7 @@ package com.pillowe.babycraft.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.pillowe.babycraft.BabycraftMod;
 import com.pillowe.babycraft.Config;
 import com.pillowe.babycraft.block.babyblock.BabyblockRenderer;
@@ -32,7 +33,23 @@ public class ModCommands {
                                                                                                         .getInstance().levelRenderer
                                                                                                         .allChanged();
                                                                                         return 1;
-                                                                                }))
+                                                                                })
+                                                                                .then(Commands.argument("color",
+                                                                                                IntegerArgumentType
+                                                                                                                .integer(0, 0xFFFFFF))
+                                                                                                .executes(context -> {
+                                                                                                        BabyblockRenderer.highlighted = true;
+                                                                                                        int value = IntegerArgumentType
+                                                                                                                        .getInteger(context,
+                                                                                                                                        "color");
+                                                                                                        Config.HIGHLIGHT_COLOR
+                                                                                                                        .set(value);
+                                                                                                        Config.SPEC.save();
+                                                                                                        net.minecraft.client.Minecraft
+                                                                                                                        .getInstance().levelRenderer
+                                                                                                                        .allChanged();
+                                                                                                        return 1;
+                                                                                                })))
                                                                 .then(Commands.literal("false")
                                                                                 .executes(context -> {
                                                                                         BabyblockRenderer.highlighted = false;
@@ -40,7 +57,23 @@ public class ModCommands {
                                                                                                         .getInstance().levelRenderer
                                                                                                         .allChanged();
                                                                                         return 1;
-                                                                                })))
+                                                                                })
+                                                                                .then(Commands.argument("color",
+                                                                                                IntegerArgumentType
+                                                                                                                .integer(0, 0xFFFFFF))
+                                                                                                .executes(context -> {
+                                                                                                        BabyblockRenderer.highlighted = false;
+                                                                                                        int value = IntegerArgumentType
+                                                                                                                        .getInteger(context,
+                                                                                                                                        "color");
+                                                                                                        Config.HIGHLIGHT_COLOR
+                                                                                                                        .set(value);
+                                                                                                        Config.SPEC.save();
+                                                                                                        net.minecraft.client.Minecraft
+                                                                                                                        .getInstance().levelRenderer
+                                                                                                                        .allChanged();
+                                                                                                        return 1;
+                                                                                                }))))
                                                 .then(Commands.literal("config")
                                                                 .requires(Commands.hasPermission(
                                                                                 Commands.LEVEL_GAMEMASTERS))

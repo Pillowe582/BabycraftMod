@@ -20,6 +20,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.pillowe.babycraft.Config;
 
 public class BabyblockRenderer implements BlockEntityRenderer<BabyblockEntity, BabyblockRenderState> {
     public static boolean highlighted = false;
@@ -95,7 +96,7 @@ public class BabyblockRenderer implements BlockEntityRenderer<BabyblockEntity, B
                     collector,
                     state.packedLight,
                     255,
-                    0xFFFFFF);
+                    Config.HIGHLIGHT_COLOR.get());
         } else {
             collector.submitMovingBlock(poseStack, state.movingState);
         }
