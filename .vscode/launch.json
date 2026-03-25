@@ -6,17 +6,17 @@
       "request": "launch",
       "name": "Client",
       "presentation": {
-        "group": "Mod Development - Tutorial-Mod-26.1-Neo",
+        "group": "Mod Development - Babycraft",
         "order": 0
       },
-      "projectName": "Tutorial-Mod-26.1-Neo",
+      "projectName": "Babycraft",
       "mainClass": "net.neoforged.devlaunch.Main",
       "args": [
-        "@D:\\ProgrammingProjects\\Minecraft\\Neoforge 1.21.1\\Tutorial-Mod-26.1-Neo\\build\\moddev\\clientRunProgramArgs.txt"
+        "@D:\\ProgrammingProjects\\Java\\Minecraft\\Babycraft\\build\\moddev\\clientRunProgramArgs.txt"
       ],
       "vmArgs": [
-        "@D:\\ProgrammingProjects\\Minecraft\\Neoforge 1.21.1\\Tutorial-Mod-26.1-Neo\\build\\moddev\\clientRunVmArgs.txt",
-        "-Dfml.modFolders\u003dbabycraft%%D:\\ProgrammingProjects\\Minecraft\\Neoforge 1.21.1\\Tutorial-Mod-26.1-Neo\\bin\\main"
+        "@D:\\ProgrammingProjects\\Java\\Minecraft\\Babycraft\\build\\moddev\\clientRunVmArgs.txt",
+        "-Dfml.modFolders\u003dbabycraft%%D:\\ProgrammingProjects\\Java\\Minecraft\\Babycraft\\bin\\main"
       ],
       "cwd": "${workspaceFolder}\\run",
       "env": {},
@@ -28,17 +28,17 @@
       "request": "launch",
       "name": "Data",
       "presentation": {
-        "group": "Mod Development - Tutorial-Mod-26.1-Neo",
+        "group": "Mod Development - Babycraft",
         "order": 1
       },
-      "projectName": "Tutorial-Mod-26.1-Neo",
+      "projectName": "Babycraft",
       "mainClass": "net.neoforged.devlaunch.Main",
       "args": [
-        "@D:\\ProgrammingProjects\\Minecraft\\Neoforge 1.21.1\\Tutorial-Mod-26.1-Neo\\build\\moddev\\dataRunProgramArgs.txt"
+        "@D:\\ProgrammingProjects\\Java\\Minecraft\\Babycraft\\build\\moddev\\dataRunProgramArgs.txt"
       ],
       "vmArgs": [
-        "@D:\\ProgrammingProjects\\Minecraft\\Neoforge 1.21.1\\Tutorial-Mod-26.1-Neo\\build\\moddev\\dataRunVmArgs.txt",
-        "-Dfml.modFolders\u003dbabycraft%%D:\\ProgrammingProjects\\Minecraft\\Neoforge 1.21.1\\Tutorial-Mod-26.1-Neo\\bin\\main"
+        "@D:\\ProgrammingProjects\\Java\\Minecraft\\Babycraft\\build\\moddev\\dataRunVmArgs.txt",
+        "-Dfml.modFolders\u003dbabycraft%%D:\\ProgrammingProjects\\Java\\Minecraft\\Babycraft\\bin\\main"
       ],
       "cwd": "${workspaceFolder}\\run",
       "env": {},
@@ -50,17 +50,17 @@
       "request": "launch",
       "name": "GameTestServer",
       "presentation": {
-        "group": "Mod Development - Tutorial-Mod-26.1-Neo",
+        "group": "Mod Development - Babycraft",
         "order": 2
       },
-      "projectName": "Tutorial-Mod-26.1-Neo",
+      "projectName": "Babycraft",
       "mainClass": "net.neoforged.devlaunch.Main",
       "args": [
-        "@D:\\ProgrammingProjects\\Minecraft\\Neoforge 1.21.1\\Tutorial-Mod-26.1-Neo\\build\\moddev\\gameTestServerRunProgramArgs.txt"
+        "@D:\\ProgrammingProjects\\Java\\Minecraft\\Babycraft\\build\\moddev\\gameTestServerRunProgramArgs.txt"
       ],
       "vmArgs": [
-        "@D:\\ProgrammingProjects\\Minecraft\\Neoforge 1.21.1\\Tutorial-Mod-26.1-Neo\\build\\moddev\\gameTestServerRunVmArgs.txt",
-        "-Dfml.modFolders\u003dbabycraft%%D:\\ProgrammingProjects\\Minecraft\\Neoforge 1.21.1\\Tutorial-Mod-26.1-Neo\\bin\\main"
+        "@D:\\ProgrammingProjects\\Java\\Minecraft\\Babycraft\\build\\moddev\\gameTestServerRunVmArgs.txt",
+        "-Dfml.modFolders\u003dbabycraft%%D:\\ProgrammingProjects\\Java\\Minecraft\\Babycraft\\bin\\main"
       ],
       "cwd": "${workspaceFolder}\\run",
       "env": {},
@@ -72,17 +72,17 @@
       "request": "launch",
       "name": "Server",
       "presentation": {
-        "group": "Mod Development - Tutorial-Mod-26.1-Neo",
+        "group": "Mod Development - Babycraft",
         "order": 3
       },
-      "projectName": "Tutorial-Mod-26.1-Neo",
+      "projectName": "Babycraft",
       "mainClass": "net.neoforged.devlaunch.Main",
       "args": [
-        "@D:\\ProgrammingProjects\\Minecraft\\Neoforge 1.21.1\\Tutorial-Mod-26.1-Neo\\build\\moddev\\serverRunProgramArgs.txt"
+        "@D:\\ProgrammingProjects\\Java\\Minecraft\\Babycraft\\build\\moddev\\serverRunProgramArgs.txt"
       ],
       "vmArgs": [
-        "@D:\\ProgrammingProjects\\Minecraft\\Neoforge 1.21.1\\Tutorial-Mod-26.1-Neo\\build\\moddev\\serverRunVmArgs.txt",
-        "-Dfml.modFolders\u003dbabycraft%%D:\\ProgrammingProjects\\Minecraft\\Neoforge 1.21.1\\Tutorial-Mod-26.1-Neo\\bin\\main"
+        "@D:\\ProgrammingProjects\\Java\\Minecraft\\Babycraft\\build\\moddev\\serverRunVmArgs.txt",
+        "-Dfml.modFolders\u003dbabycraft%%D:\\ProgrammingProjects\\Java\\Minecraft\\Babycraft\\bin\\main"
       ],
       "cwd": "${workspaceFolder}\\run",
       "env": {},

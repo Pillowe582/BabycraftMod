@@ -2,6 +2,8 @@ package com.pillowe.babycraft.block.babyblock;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.block.BlockModelResolver;
+import net.minecraft.client.renderer.block.model.BlockDisplayContext;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
@@ -21,9 +23,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 public class BabyblockRenderer implements BlockEntityRenderer<BabyblockEntity, BabyblockRenderState> {
     public static boolean highlighted = false;
+    public static final BlockDisplayContext BLOCK_DISPLAY_CONTEXT = BlockDisplayContext.create();
+    private final BlockModelResolver blockResolver;
 
     public BabyblockRenderer(BlockEntityRendererProvider.Context context) {
         // Constructor can be empty or used for initialization if needed
+        this.blockResolver = context.blockModelResolver();
     }
 
     @Override
@@ -56,19 +61,12 @@ public class BabyblockRenderer implements BlockEntityRenderer<BabyblockEntity, B
         renderState.movingState.cardinalLighting = CardinalLighting.DEFAULT;
         renderState.movingState.randomSeedPos = renderState.pos;
 
+        // 新API：使用BlockModelResolver更新块模型状态
         if (highlighted) {
-            renderState.parts = new java.util.ArrayList<>();
-            BlockState plainState = Blocks.WHITE_CONCRETE.defaultBlockState();
-
-            var dispatcher = Minecraft.getInstance().getBlockRenderer();
-            var model = dispatcher.getBlockModel(plainState);
-
-            model.collectParts(
-                    renderState.movingState,
-                    renderState.pos,
-                    plainState,
-                    RandomSource.create(42),
-                    renderState.parts);
+            blockResolver.update(renderState.blockModel, Blocks.WHITE_CONCRETE.defaultBlockState(),
+                    BLOCK_DISPLAY_CONTEXT);
+        } else {
+            blockResolver.update(renderState.blockModel, renderState.adultState, BLOCK_DISPLAY_CONTEXT);
         }
 
     }
@@ -92,14 +90,12 @@ public class BabyblockRenderer implements BlockEntityRenderer<BabyblockEntity, B
         poseStack.translate(-0.5, 0, -0.5);
 
         if (highlighted) {
-            collector.submitBlockModel(
+            state.blockModel.submit(
                     poseStack,
-                    RenderTypes.cutoutMovingBlock(),
-                    state.parts,
-                    new int[0],
+                    collector,
                     state.packedLight,
-                    OverlayTexture.WHITE_OVERLAY_V,
-                    255);
+                    255,
+                    0xFFFFFF);
         } else {
             collector.submitMovingBlock(poseStack, state.movingState);
         }

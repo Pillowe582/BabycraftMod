@@ -3,6 +3,7 @@ package com.pillowe.babycraft.block.babyblock;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.renderer.block.BlockModelRenderState;
 import net.minecraft.client.renderer.block.MovingBlockRenderState;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
@@ -17,6 +18,7 @@ public class BabyblockRenderState extends BlockEntityRenderState {
     public float growState;
     public final MovingBlockRenderState movingState = new MovingBlockRenderState();
 
+    public final BlockModelRenderState blockModel = new BlockModelRenderState();
     public List<BlockStateModelPart> parts = new ArrayList<>();
 
     public BabyblockRenderState() {
