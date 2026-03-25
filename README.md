@@ -1,7 +1,7 @@
 
 Babycraft
 =======
-- 本赤石mod基于Neoforge开发，适用于Minecraft 26.1-snapshot-11版本 ，其他版本未测试
+- 本赤石mod基于Neoforge开发，适用于Minecraft 26.1版本 ，其他版本未测试
 
 
 Features
