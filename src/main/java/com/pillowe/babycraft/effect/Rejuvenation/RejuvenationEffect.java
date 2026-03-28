@@ -1,8 +1,6 @@
 package com.pillowe.babycraft.effect.Rejuvenation;
 
-import com.pillowe.babycraft.BabycraftMod;
 import com.pillowe.babycraft.Config;
-import com.pillowe.babycraft.effect.ModEffects;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerLevel;
@@ -13,19 +11,15 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.entity.vault.VaultBlockEntity.Server;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
 
 public class RejuvenationEffect extends MobEffect {
     RandomSource random = RandomSource.create(114514);
 
     private enum RandomEffects {
-        WINDOW
+        WINDOW,
+        FPS,
+        GUISCALE,
+        RENDERDISTANCE,
     }
 
     public RejuvenationEffect(MobEffectCategory category, int color) {
@@ -53,15 +47,33 @@ public class RejuvenationEffect extends MobEffect {
     public boolean applyEffectTick(ServerLevel serverLevel, LivingEntity mob, int amplification) {
         RandomEffects effects[] = RandomEffects.values();
         RandomEffects effect = effects[random.nextInt(effects.length)];
+        Minecraft mc = Minecraft.getInstance();
+        if (!(mob instanceof ServerPlayer)) {
+            return true;
+        }
         switch (effect) {
             case WINDOW:
-                if (!(mob instanceof ServerPlayer)) {
-                    return true;
-                }
-                Minecraft mc = Minecraft.getInstance();
                 int windowHeight = mc.getWindow().getHeight();
                 int windowWidth = mc.getWindow().getWidth();
                 mc.getWindow().setWindowed(windowWidth / 2, windowHeight / 2);
+                break;
+            case FPS:
+                int fpsLimit = mc.options.framerateLimit().get();
+                if (fpsLimit == 0) {
+                    fpsLimit = 240;
+                }
+                mc.options.framerateLimit().set(Math.max(fpsLimit / 2, 10));
+                break;
+            case GUISCALE:
+                int guiScale = mc.options.guiScale().get();
+                if (guiScale == 0) {
+                    guiScale = 4;
+                }
+                mc.options.guiScale().set(Math.max(guiScale - 1, 1));
+                break;
+            case RENDERDISTANCE:
+                int renderDistance = mc.options.renderDistance().get();
+                mc.options.renderDistance().set(Math.max(renderDistance / 2, 2));
                 break;
         }
         return true;
