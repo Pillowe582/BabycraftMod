@@ -6,10 +6,13 @@ import com.pillowe.babycraft.effect.ModEffects;
 
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 
 @EventBusSubscriber(modid = BabycraftMod.MOD_ID)
 public class ServerEvents {
@@ -35,6 +38,16 @@ public class ServerEvents {
                                 ModEffects.REJUVENATION,
                                 (amplifier + 1) * Config.MINIMIZE_LEVEL_DURATION.get()));
 
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onRejuvenationExpired(MobEffectEvent.Expired event) {
+        if (event.getEffectInstance().getEffect().is(ModEffects.REJUVENATION.getKey())) {
+            AttributeInstance attribute = event.getEntity().getAttribute(Attributes.SCALE);
+            if (attribute != null) {
+                attribute.setBaseValue(1.0);
             }
         }
     }
