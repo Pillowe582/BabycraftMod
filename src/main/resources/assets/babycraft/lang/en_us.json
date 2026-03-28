@@ -1,4 +1,13 @@
 {
     "block.babycraft.baby_block": "Baby Block",
-    "item.babycraft.golden_dandelioness": "Golden Dandelioness"
+    "item.babycraft.golden_dandelioness": "Golden Dandelioness",
+    "babycraft.configuation.BabyblockGenerateCount": "Babyblock Spawn Tries per Chunk",
+    "babycraft.configuation.BabyblockGrowChance": "Babyblock Grow Chance",
+    "babycraft.configuation.GoldenDandelionBlastRadius": "Golden Dandelion Blast Radius",
+    "babycraft.configuation.GoldenDandelionessBlastRadius": "Golden Dandelioness Blast Radius",
+    "babycraft.configuation.HighlightColor": "Highlight Color",
+    "babycraft.configuation.MinimizeBaseChance": "Minimize Base Chance",
+    "babycraft.configuation.MinimizeLevelChance": "Minimize Level Chance",
+    "babycraft.configuation.MinimizeLevelDuration": "Minimize Level Duration (Ticks)",
+    "babycraft.configuation.RejuvenationTriggerChance": "Rejuvenation Trigger Chance"
 }

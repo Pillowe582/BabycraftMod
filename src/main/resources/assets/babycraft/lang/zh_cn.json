@@ -1,4 +1,13 @@
 {
-    "block.babycraft.baby_block": "幼年方块",
-    "item.babycraft.golden_dandelioness": "金蒲母英"
+    "block.babycraft.baby_block": "童块",
+    "item.babycraft.golden_dandelioness": "金蒲母英",
+    "babycraft.configuation.BabyblockGenerateCount": "童块生成尝试次数",
+    "babycraft.configuation.BabyblockGrowChance": "童块生长概率",
+    "babycraft.configuation.GoldenDandelionBlastRadius": "金蒲公英技能半径",
+    "babycraft.configuation.GoldenDandelionessBlastRadius": "金蒲母英技能半径",
+    "babycraft.configuation.HighlightColor": "童块高亮颜色",
+    "babycraft.configuation.MinimizeBaseChance": "基础重开概率",
+    "babycraft.configuation.MinimizeLevelChance": "重开效果每级概率增量",
+    "babycraft.configuation.MinimizeLevelDuration": "重开效果每级造成返老还童效果持续刻数",
+    "babycraft.configuation.RejuvenationTriggerChance": "返老还童效果每刻触发概率"
 }
