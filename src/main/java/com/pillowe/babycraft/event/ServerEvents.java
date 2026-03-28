@@ -43,7 +43,7 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onRejuvenationExpired(MobEffectEvent.Expired event) {
+    public static void onRejuvenationExpired(MobEffectEvent.Expired event) {
         if (event.getEffectInstance().getEffect().is(ModEffects.REJUVENATION.getKey())) {
             AttributeInstance attribute = event.getEntity().getAttribute(Attributes.SCALE);
             if (attribute != null) {
