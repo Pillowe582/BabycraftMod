@@ -3,13 +3,14 @@ package com.pillowe.babycraft.effect.Rejuvenation;
 import com.pillowe.babycraft.Config;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class RejuvenationEffect extends MobEffect {
@@ -28,10 +29,27 @@ public class RejuvenationEffect extends MobEffect {
 
     @Override
     public void onEffectStarted(LivingEntity mob, int amplifier) {
-        AttributeInstance attribute = mob.getAttribute(Attributes.SCALE);
-        if (attribute != null) {
-            attribute.setBaseValue(0.5);
-        }
+
+        this.addAttributeModifier(Attributes.SCALE, Identifier.fromNamespaceAndPath("babycraft", "rejuvenation_scale"),
+                -0.5,
+                AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        this.addAttributeModifier(Attributes.MAX_HEALTH,
+                Identifier.fromNamespaceAndPath("babycraft", "rejuvenation_health"),
+                -0.5,
+                AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        this.addAttributeModifier(Attributes.ATTACK_DAMAGE,
+                Identifier.fromNamespaceAndPath("babycraft", "rejuvenation_attack"),
+                -0.5,
+                AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        this.addAttributeModifier(Attributes.STEP_HEIGHT,
+                Identifier.fromNamespaceAndPath("babycraft", "rejuvenation_step_height"),
+                -0.5,
+                AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        this.addAttributeModifier(Attributes.SAFE_FALL_DISTANCE,
+                Identifier.fromNamespaceAndPath("babycraft", "rejuvenation_safe_fall_distance"),
+                1,
+                AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+
     }
 
     @Override
