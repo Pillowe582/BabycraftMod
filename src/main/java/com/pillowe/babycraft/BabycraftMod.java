@@ -3,6 +3,7 @@ package com.pillowe.babycraft;
 import com.pillowe.babycraft.block.ModBlocks;
 import com.pillowe.babycraft.effect.ModEffects;
 import com.pillowe.babycraft.item.ModItems;
+import com.pillowe.babycraft.potion.ModPotions;
 import com.pillowe.babycraft.recipe.ModRecipes;
 import com.pillowe.babycraft.worldgen.ModFeatures;
 import com.pillowe.babycraft.block.ModBlockEntities;
@@ -39,6 +40,7 @@ public class BabycraftMod {
         ModItems.ITEMS.register(modEventBus);
         ModRecipes.RECIPES.register(modEventBus);
         ModEffects.EFFECTS.register(modEventBus);
+        ModPotions.POTIONS.register(modEventBus);
         modEventBus.addListener(this::addCreative);
     }
 

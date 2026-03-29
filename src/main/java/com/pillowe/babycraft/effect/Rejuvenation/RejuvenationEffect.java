@@ -116,6 +116,7 @@ public class RejuvenationEffect extends MobEffect {
             case TITLE:
                 makeParticle(mob, 0xB266FF);
                 mc.getWindow().setTitle("ᵐᶦⁿᵉᶜʳᵃᶠᵗ");
+                break;
         }
         return true;
     }
@@ -127,7 +128,7 @@ public class RejuvenationEffect extends MobEffect {
         DustParticleOptions particle = new DustParticleOptions(color, 1);
 
         ServerLevel serverLevel = (ServerLevel) mob.level();
-        serverLevel.sendParticles(particle, x, y, z, 250, 1, 1, 1, 0.2);
+        serverLevel.sendParticles(particle, x, y, z, 250, 1, 1, 1, 0);
         serverLevel.playSound(null, mob.getX(), mob.getY(), mob.getZ(), SoundEvents.PLAYER_BURP, SoundSource.PLAYERS,
                 1.0f, 1.0f);
     }
