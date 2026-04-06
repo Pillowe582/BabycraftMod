@@ -16,7 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
-public class RejuvenationEffect extends MobEffect {
+public class RejuvenationEffectPlayer extends MobEffect {
     RandomSource random = RandomSource.create(114514);
 
     private enum RandomEffects {
@@ -29,7 +29,7 @@ public class RejuvenationEffect extends MobEffect {
         TITLE,
     }
 
-    public RejuvenationEffect(MobEffectCategory category, int color) {
+    public RejuvenationEffectPlayer(MobEffectCategory category, int color) {
         super(category, color);
     }
 

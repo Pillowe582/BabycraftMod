@@ -6,22 +6,27 @@ import com.pillowe.babycraft.effect.ModEffects;
 import com.pillowe.babycraft.item.ModItems;
 import com.pillowe.babycraft.potion.ModPotions;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Witch;
+import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownSplashPotion;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionBrewing;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 
 @EventBusSubscriber(modid = BabycraftMod.MOD_ID)
 public class ServerEvents {
     @SubscribeEvent
     public static void checkMinimize(LivingIncomingDamageEvent event) {
-        System.out.println("checkMinimize");
         Level level = event.getEntity().level();
         if (level.isClientSide()) {
             return;
@@ -31,11 +36,9 @@ public class ServerEvents {
                 return;
             }
             int amplifier = attacker.getEffect(ModEffects.MINIMIZE_EFFECT.getDelegate()).getAmplifier();
-            System.out.println("amplifier: " + amplifier);
             if (level.getRandom().nextDouble() < Config.MINIMIZE_BASE_CHANCE.get()
                     + Config.MINIMIZE_LEVEL_CHANCE.get()
                             * amplifier) {
-                System.out.println("add rejuvenation");
                 event.getEntity().addEffect(
                         new MobEffectInstance(
                                 ModEffects.REJUVENATION,
@@ -67,4 +70,44 @@ public class ServerEvents {
 
     }
 
+    @SubscribeEvent
+    public static void onPotionSpawn(EntityJoinLevelEvent event) {
+        if (!(event.getEntity() instanceof ThrownSplashPotion potion)) {
+            return;
+        }
+        if (!(potion.getOwner() instanceof Witch)) {
+            return;
+        }
+        PotionContents potionContents = potion.getItem().get(DataComponents.POTION_CONTENTS);
+        if (potionContents == null || potionContents.potion().isEmpty()) {
+
+            return;
+        }
+        if (potionContents.potion().get() != Potions.HEALING.getDelegate()
+                && potionContents.potion().get() != Potions.REGENERATION.getDelegate()) {
+            return;
+        }
+
+        if (potion.level().getRandom().nextDouble() >= 0.3D) {
+            return;
+        }
+
+        double random = potion.level().getRandom().nextDouble();
+        PotionContents newContents;
+        if (random < 0.60D) {
+            newContents = new PotionContents(ModPotions.MINIMIZE_I);
+        } else if (random < 0.8D) {
+            newContents = new PotionContents(ModPotions.MINIMIZE_II);
+        } else if (random < 0.9D) {
+            newContents = new PotionContents(ModPotions.MINIMIZE_III);
+        } else if (random < 0.95D) {
+            newContents = new PotionContents(ModPotions.MINIMIZE_IV);
+        } else {
+            newContents = new PotionContents(ModPotions.MINIMIZE_V);
+        }
+
+        ItemStack newPotion = new ItemStack(Items.SPLASH_POTION);
+        newPotion.set(DataComponents.POTION_CONTENTS, newContents);
+        potion.setItem(newPotion);
+    }
 }
