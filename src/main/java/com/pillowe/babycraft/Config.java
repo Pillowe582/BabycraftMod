@@ -46,6 +46,12 @@ public class Config {
         public static final ModConfigSpec.DoubleValue REJUVENATION_EFFECT_MOB_START_CHANCE = BUILDER
                         .comment("返老还童效果对生物触发概率")
                         .defineInRange("RejuvenationEffectMobStartChance", 0.1, 0, 1);
+        public static final ModConfigSpec.IntValue REJUVENATION_EFFECT_MOB_LAST_TIME_MIN = BUILDER
+                        .comment("返老还童效果对生物最短持续时间（刻）")
+                        .defineInRange("RejuvenationEffectMobLastTimeMin", 20, 0, Integer.MAX_VALUE);
+        public static final ModConfigSpec.IntValue REJUVENATION_EFFECT_MOB_LAST_TIME_MAX = BUILDER
+                        .comment("返老还童效果对生物最长持续时间（刻）")
+                        .defineInRange("RejuvenationEffectMobLastTimeMax", 100, 0, Integer.MAX_VALUE);
 
         public static final ModConfigSpec SPEC = BUILDER.build();
 

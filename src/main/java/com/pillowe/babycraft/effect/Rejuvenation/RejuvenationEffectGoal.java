@@ -34,7 +34,8 @@ public class RejuvenationEffectGoal extends Goal {
 
     @Override
     public void start() {
-        this.timer = 40 + mob.getRandom().nextInt(60);
+        this.timer = mob.getRandom().nextIntBetweenInclusive(Config.REJUVENATION_EFFECT_MOB_LAST_TIME_MIN.get(),
+                Config.REJUVENATION_EFFECT_MOB_LAST_TIME_MAX.get());
         RejuvenationEffectPlayer.makeParticle(mob, mob.getRandom().nextInt(0xFFFFFF));
     }
 
