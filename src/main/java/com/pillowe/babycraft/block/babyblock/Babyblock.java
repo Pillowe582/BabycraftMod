@@ -9,12 +9,14 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -22,8 +24,32 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import com.pillowe.babycraft.block.ModBlocks;
 
 public class Babyblock extends Block implements EntityBlock {
+    private boolean canDestroyBaby = true;
+
+    public void stepOn(Level level, BlockPos pos, BlockState onState, Entity entity) {
+        if (!entity.isSteppingCarefully()) {
+            this.destroyBaby(level, onState, pos, entity, 100);
+        }
+        super.stepOn(level, pos, onState, entity);
+    }
+
+    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, double fallDistance) {
+        this.destroyBaby(level, state, pos, entity, 3);
+        super.fallOn(level, state, pos, entity, fallDistance);
+    }
+
+    private void destroyBaby(Level level, BlockState state, BlockPos pos, Entity entity, int randomness) {
+        if (state.is(ModBlocks.BABY_BLOCK) && level instanceof ServerLevel) {
+            if (this.canDestroyBaby && level.getRandom().nextInt(randomness) == 0) {
+                level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+            }
+        }
+
+    }
+
     public static final VoxelShape[] SHAPE = new VoxelShape[] {
             createScaledShape(0.3),
             createScaledShape(0.45),
