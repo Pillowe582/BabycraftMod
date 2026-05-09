@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.pillowe.babycraft.block.ModBlockEntities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
@@ -82,12 +83,12 @@ public class BabyblockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
-
         if (adultState != null) {
             output.store(
                     "adult_state",
                     BlockState.CODEC,
                     adultState);
+
         }
         output.store("grow_state", Codec.INT, growState);
     }
@@ -95,10 +96,9 @@ public class BabyblockEntity extends BlockEntity {
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
-
         adultState = input.read(
                 "adult_state",
-                BlockState.CODEC).orElse(null);
+                BlockState.CODEC).orElse(Blocks.AIR.defaultBlockState());
         growState = input.read("grow_state", Codec.INT).orElse(1);
     }
 
@@ -110,5 +110,13 @@ public class BabyblockEntity extends BlockEntity {
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         return saveWithoutMetadata(registries);
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        if (level != null && !level.isClientSide()) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
     }
 }

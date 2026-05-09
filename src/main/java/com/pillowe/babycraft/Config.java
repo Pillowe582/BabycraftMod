@@ -52,6 +52,9 @@ public class Config {
         public static final ModConfigSpec.IntValue REJUVENATION_EFFECT_MOB_LAST_TIME_MAX = BUILDER
                         .comment("返老还童效果对生物最长持续时间（刻）")
                         .defineInRange("RejuvenationEffectMobLastTimeMax", 100, 0, Integer.MAX_VALUE);
+        public static final ModConfigSpec.DoubleValue REJUVENATION_EFFECT_BLOCK_CHANCE = BUILDER
+                        .comment("返老还童效果下每级放出童块概率")
+                        .defineInRange("RejuvenationEffectBlockChance", 0.1, 0.0, 1.0);
 
         public static final ModConfigSpec SPEC = BUILDER.build();
 

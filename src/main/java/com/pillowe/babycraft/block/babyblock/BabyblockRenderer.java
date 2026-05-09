@@ -40,15 +40,20 @@ public class BabyblockRenderer implements BlockEntityRenderer<BabyblockEntity, B
             float partialTicks,
             Vec3 cameraPos,
             @Nullable ModelFeatureRenderer.CrumblingOverlay overlay) {
-
+        if (blockEntity == null || renderState == null) {
+            return;
+        }
         // Extract the adult state from block entity
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, partialTicks, cameraPos,
                 overlay); // This is mandatory, or die alive no render
         renderState.adultState = blockEntity.getAdultState();
+        if (renderState.adultState == null
+                || renderState.adultState.isAir()) {
+            return;
+        }
         renderState.growState = blockEntity.getGrowState();
         renderState.pos = blockEntity.getBlockPos();
         Level level = blockEntity.getLevel();
-
         // Set the moving block state
         renderState.movingState.blockState = renderState.adultState;
         renderState.movingState.blockPos = blockEntity.getBlockPos();

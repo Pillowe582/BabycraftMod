@@ -2,14 +2,18 @@ package com.pillowe.babycraft.event;
 
 import com.pillowe.babycraft.BabycraftMod;
 import com.pillowe.babycraft.Config;
+import com.pillowe.babycraft.block.ModBlocks;
+import com.pillowe.babycraft.block.babyblock.BabyblockEntity;
 import com.pillowe.babycraft.effect.ModEffects;
 import com.pillowe.babycraft.item.ModItems;
 import com.pillowe.babycraft.potion.ModPotions;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Witch;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownSplashPotion;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -17,11 +21,13 @@ import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.level.BlockEvent.EntityPlaceEvent;
 
 @EventBusSubscriber(modid = BabycraftMod.MOD_ID)
 public class ServerEvents {
@@ -109,5 +115,31 @@ public class ServerEvents {
         ItemStack newPotion = new ItemStack(Items.SPLASH_POTION);
         newPotion.set(DataComponents.POTION_CONTENTS, newContents);
         potion.setItem(newPotion);
+    }
+
+    @SubscribeEvent
+    public static void onBlockPlaced(EntityPlaceEvent event) {
+        if (!(event.getEntity() instanceof LivingEntity entity)) {
+            return;
+        }
+        if (!entity.hasEffect(ModEffects.REJUVENATION)) {
+            return;
+        }
+        if (entity.level().isClientSide()) {
+            return;
+        }
+        int amplifier = entity.getEffect(ModEffects.REJUVENATION).getAmplifier();
+        double chance = Config.REJUVENATION_EFFECT_BLOCK_CHANCE.get() * (amplifier + 1);
+        if (entity.level().getRandom().nextDouble() < chance) {
+            BlockState originalState = event.getPlacedBlock();
+            BlockPos pos = event.getPos();
+            boolean placed = entity.level().setBlock(pos, ModBlocks.BABY_BLOCK.get().defaultBlockState(), 3);
+            if (placed) {
+                if (entity.level().getBlockEntity(pos) instanceof BabyblockEntity baby) {
+                    baby.setAdultState(originalState);
+                    baby.setChanged();
+                }
+            }
+        }
     }
 }
